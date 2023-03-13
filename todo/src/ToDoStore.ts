@@ -8,7 +8,7 @@ export default class ToDoStore {
     @observable
     ToDos: ToDoModel[] = [];
 
-    private todoAPI = 'https://localhost:44308/api/ToDo';
+    private todoAPI = 'https://localhost:8000/api/todos';
 
     @action.bound
     async init() {
