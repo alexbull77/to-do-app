@@ -15,10 +15,29 @@ class Tasks {
 
     addTask(newTask: ToDoModel) {
         this.tasks.push(newTask)
+        const taskForAPI = {
+            "title": newTask.Title,
+            "description": newTask.Description,
+            "isCompleted": newTask.IsCompleted
+        }
+        fetch("http://127.0.0.1:8000/api/todos/", {
+            method: "POST", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(taskForAPI),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }
 
     addTasks(tasks) {
-        tasks.map(({ id, title, description, isCompleted }) => {
+        tasks.map(({id, title, description, isCompleted}) => {
             this.tasks.push({
                 ID: id,
                 Title: title,
@@ -42,11 +61,12 @@ class Tasks {
 
     get titles() {
         let output = []
-        for (let i=0; i < this.tasks.length; i++)
+        for (let i = 0; i < this.tasks.length; i++)
             output.push(this.tasks[i].Title)
-        console.log('Titles', output)
+        // console.log('Titles', output)
         return output
     }
+
     fetchTasks() {
         console.log('fetch')
         axios.get('http://127.0.0.1:8000/api/todos')
@@ -56,9 +76,11 @@ class Tasks {
                 else {
                     // we check if data was fetched before so there is no need to fetch again
                     const newTasks = response.data.filter((obj) => !this.titles.includes(obj.title))
-                    console.log('New Tasks', newTasks)
+                    // console.log('New Tasks', newTasks)
                     if (newTasks.length !== 0)
                         this.addTask(newTasks)
+                    else
+                        console.log('Nothing new to fetch')
                 }
 
             })
