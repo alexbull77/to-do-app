@@ -8,13 +8,39 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Box, Card, Typography} from "@mui/material";
 import Fab from "@mui/material/Fab";
+import todo from "../Store/ToDoStore"
 import AddIcon from "@mui/icons-material/Add";
+import {useState} from "react";
 
 export default function NewTaskDialog( ) {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
-    // console.log(open)
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value)
+        console.log(title)
+    }
+
+    const handleDescriptionChange = (event) => {
+        setDescription(event.target.value)
+        console.log(description)
+    }
+
+    const handleSubmit = () => {
+        console.log("Before insert>> ", todo.tasks)
+        todo.addTask({
+            ID: (todo.tasks.at(todo.tasks.length - 1).ID + 1),
+            Title: title,
+            Description: description,
+            IsCompleted: false
+        })
+        console.log("After insert>> ", todo.tasks)
+        handleClose()
+    }
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -62,6 +88,7 @@ export default function NewTaskDialog( ) {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={handleTitleChange}
                     />
                     <DialogContentText color={'primary'}>
                         Enter a short description
@@ -74,13 +101,14 @@ export default function NewTaskDialog( ) {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={handleDescriptionChange}
                     />
 
                 </DialogContent>
 
                 <DialogActions>
                     <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-                    <Button variant="outlined" onClick={handleClose}>Add</Button>
+                    <Button variant="outlined" onClick={handleSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -4,9 +4,9 @@ import axios from "axios";
 
 class Tasks {
     tasks: ToDoModel[] = [
-        {ID: 4, Title: 'First task', Description: 'First Description', IsCompleted: false},
-        {ID: 2, Title: 'Second task', Description: 'Second Description', IsCompleted: false},
-        {ID: 3, Title: 'Third task', Description: 'Third Description', IsCompleted: false},
+        // {ID: 4, Title: 'First task', Description: 'First Description', IsCompleted: false},
+        // {ID: 2, Title: 'Second task', Description: 'Second Description', IsCompleted: false},
+        // {ID: 3, Title: 'Third task', Description: 'Third Description', IsCompleted: false},
     ]
 
     constructor() {
@@ -18,7 +18,6 @@ class Tasks {
     }
 
     addTasks(tasks) {
-
         tasks.map(({ id, title, description, isCompleted }) => {
             this.tasks.push({
                 ID: id,
@@ -41,10 +40,28 @@ class Tasks {
         this.tasks = [...this.tasks, ...new_Tasks]
     }
 
+    get titles() {
+        let output = []
+        for (let i=0; i < this.tasks.length; i++)
+            output.push(this.tasks[i].Title)
+        console.log('Titles', output)
+        return output
+    }
     fetchTasks() {
         console.log('fetch')
         axios.get('http://127.0.0.1:8000/api/todos')
-            .then(response => this.addTasks(response.data))
+            .then(response => {
+                if (this.tasks.length === 0)
+                    this.addTasks(response.data)
+                else {
+                    // we check if data was fetched before so there is no need to fetch again
+                    const newTasks = response.data.filter((obj) => !this.titles.includes(obj.title))
+                    console.log('New Tasks', newTasks)
+                    if (newTasks.length !== 0)
+                        this.addTask(newTasks)
+                }
+
+            })
             .catch(function (error) {
                 console.log(error);
             });
