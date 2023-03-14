@@ -1,12 +1,12 @@
 import React from 'react';
 import {observer} from "mobx-react-lite";
-import todo from "../Store/ToDoClass"
-import SingleTodo from "./SingleTodo";
-import ToDoModel from "../ToDoModel";
-import {Box, Button, Card, Checkbox, List, styled, Typography} from "@mui/material";
+import todo from "../Store/ToDoStore"
+import ToDoModel from "../Store/ToDoModel";
+import {Box, Button, Card, Checkbox, Grid, List, Typography} from "@mui/material";
 import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FetchButton from "./FetchButton";
+import NewTaskDialog from "./NewTaskDialog";
 
 const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
@@ -16,17 +16,30 @@ const TodoList = observer(() => {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                justifyContent: 'up',
                 minHeight: '10vh',
                 marginTop: '20px',
                 marginBottom: '20px'
             }}>
-                <Typography variant="h4" gutterBottom>
-                    My Todo List
-                </Typography>
+                <Grid container sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    pl: '20%',
+                    pr: '20%'
+                }}>
+
+                    <Grid item xs={6}>
+                        <Typography variant="h4" gutterBottom>
+                            My Todo List
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FetchButton handleClick={() => todo.fetchTasks()}></FetchButton>
+                    </Grid>
+                </Grid>
+
             </Box>
-            <FetchButton handleClick={() => todo.fetchTasks()}></FetchButton>
 
             <List>
                 {todo.tasks.map((task) => (
@@ -47,7 +60,7 @@ const TodoList = observer(() => {
                         </Fab>
                     </Card>
                 ))}
-
+                <NewTaskDialog />
             </List>
         </>
     );

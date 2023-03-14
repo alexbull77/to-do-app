@@ -1,40 +1,41 @@
 import React from 'react';
-import {useObserver} from "mobx-react";
-import NewToDoForm from "./components/NewToDoForm";
-import {useRootStore} from "./ToDoContext";
-import axios from "axios";
-import SingleTodo from "./components/SingleTodo";
 import TodoList from "./components/TodoList";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import NewTaskDialog from "./components/NewTaskDialog";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#317773',
+        },
+        secondary: {
+            main: '#E2D1F9',
+        },
+    },
+    typography: {
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    },
+});
 
 const App = () => {
-    const {toDoStore} = useRootStore()
-
     return (
-        <>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
             <TodoList />
-        </>
-
+        </ThemeProvider>
     )
-    // return useObserver(() => (
-    //         <>
-    //             <NewToDoForm addToDo={toDoStore.addToDo}/>
-    //             <br/>
-    //             <ul>
-    //                 {
-    //                     toDoStore.ToDos.map(todo => (
-    //                             <li key={note.ID}>
-    //                                 {note.Title}
-    //                             </li>
-    //                         )
-    //                     )
-    //                 }
-    //             </ul>
-    //             <br/>
-    //             <button onClick={() => toDoStore.saveNotes()}>Save</button>
-    //             <button onClick={() => toDoStore.loadToDos()}>Load</button>
-    //         </>
-    //     )
-    // );
+
 };
 
 export default App;

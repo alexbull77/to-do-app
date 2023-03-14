@@ -1,4 +1,4 @@
-import ToDoModel from "./ToDoModel";
+import ToDoModel from "./Store/ToDoModel";
 
 export const getToDos = ():Promise<ToDoModel[]> => {
     return fetch('http://localhost:8000/api/todos/')

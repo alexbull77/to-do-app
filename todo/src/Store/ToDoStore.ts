@@ -1,4 +1,4 @@
-import ToDoModel from "../ToDoModel";
+import ToDoModel from "./ToDoModel";
 import {action, makeAutoObservable} from "mobx";
 import axios from "axios";
 
