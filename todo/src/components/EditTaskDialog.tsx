@@ -17,11 +17,11 @@ export default function EditTaskDialog({task}) {
 
     const [open, setOpen] = useState(false);
 
-    const [title, setTitle] = useState(task.Title)
-    const [description, setDescription] = useState(task.Description)
+    const [title, setTitle] = useState(task.title)
+    const [description, setDescription] = useState(task.description)
 
-    console.log('Title is ' + title)
-    console.log('Description is ' + description)
+    // console.log('Title is ' + title)
+    // console.log('Description is ' + description)
 
     const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
@@ -37,17 +37,17 @@ export default function EditTaskDialog({task}) {
 
         event.preventDefault()
         // check if we have changed anything at all
-        if (task.Title === title && task.Description === description) {
+        if (task.title === title && task.description === description) {
             console.log('Nothing had changed!')
             handleClose()
             return
         }
 
         todo.updateTask({
-            ID: task.ID,
-            Title: title,
-            Description: description,
-            IsCompleted: task.IsCompleted
+            id: task.id,
+            title: title,
+            description: description,
+            isCompleted: task.isCompleted
         })
         // console.log("After insert>> ", todo.tasks)
         handleClose()
@@ -77,11 +77,12 @@ export default function EditTaskDialog({task}) {
                         Please rename your task
                     </DialogContentText>
                     <TextField
+                        // somehow doesn't work
+                        // didn't find a way to make it work
                         autoFocus={true}
                         value={title}
                         margin="normal"
                         id="title"
-                        // label="Title"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -91,10 +92,8 @@ export default function EditTaskDialog({task}) {
                         Refactor the existing description
                     </DialogContentText>
                     <TextField
-                        // autoFocus
                         margin="normal"
                         id="name"
-                        // label="Description"
                         value={description}
                         type="text"
                         fullWidth

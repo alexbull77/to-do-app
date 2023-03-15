@@ -40,9 +40,9 @@ export default function NewTaskDialog( ) {
         // console.log("Before insert>> ", todo.tasks)
         todo.addTask({
             // ID: '99',
-            Title: title,
-            Description: description,
-            IsCompleted: false
+            title: title,
+            description: description,
+            isCompleted: false
         })
 
         // so that we don't have left over values from another task

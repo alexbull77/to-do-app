@@ -10,23 +10,17 @@ class Tasks {
     }
 
     addTask(newTask: ToDoModel) {
-        const taskForAPI = {
-            // "id": newTask.ID,
-            "title": newTask.Title,
-            "description": newTask.Description,
-            "isCompleted": newTask.IsCompleted
-        }
         fetch("http://127.0.0.1:8000/api/todos/", {
             method: "POST", // or 'PUT'
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(taskForAPI),
+            body: JSON.stringify(newTask),
         })
             .then((response) => response.json())
             .then((data) => {
                 console.log("Success:", data);
-                newTask.ID = data.id
+                newTask.id = data.id
                 console.log(newTask)
                 this.tasks.push(newTask)
             })
@@ -36,34 +30,25 @@ class Tasks {
     }
 
     updateTask(updatedTask: ToDoModel) {
-        // console.log('UPDATE UPDATE UPDATE')
-        // this.tasks.push(updatedTask)
-        const taskForAPI = {
-            'id': updatedTask.ID,
-            "title": updatedTask.Title,
-            "description": updatedTask.Description,
-            "isCompleted": updatedTask.IsCompleted
-        }
+         // console.log(`http://127.0.0.1:8000/api/todos/${updatedTask.ID}`)
 
-        // console.log(`http://127.0.0.1:8000/api/todos/${updatedTask.ID}`)
-
-        fetch(`http://127.0.0.1:8000/api/todos/${updatedTask.ID}/`, {
+        fetch(`http://127.0.0.1:8000/api/todos/${updatedTask.id}/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(taskForAPI),
+            body: JSON.stringify(updatedTask),
         })
             .then((response) => response.json())
             .then((data) => {
                 // console.log("Success:", data);
                 // get the old task to change the values without fetching data from backend
-                // although might not be optimal
+                // although it might not be optimal
                 // who knows))
-                const oldTask = this.tasks.find(task => task.ID === updatedTask.ID)
+                const oldTask = this.tasks.find(task => task.id === updatedTask.id)
                 // 2 possibly changed fields
-                oldTask.Title = updatedTask.Title
-                oldTask.Description = updatedTask.Description
+                oldTask.title = updatedTask.title
+                oldTask.description = updatedTask.description
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -73,10 +58,10 @@ class Tasks {
     addTasks(tasks) {
         tasks.map(({id, title, description, isCompleted}) => {
             this.tasks.push({
-                ID: id,
-                Title: title,
-                Description: description,
-                IsCompleted: isCompleted
+                id: id,
+                title: title,
+                description: description,
+                isCompleted: isCompleted
             })
         })
     }
@@ -87,28 +72,21 @@ class Tasks {
                 console.log(res)
                 console.log(res.data)
             })
-        this.tasks = this.tasks.filter((task) => task.ID !== id)
+        this.tasks = this.tasks.filter((task) => task.id !== id)
     }
 
 
     changeTaskCompletion(task: ToDoModel) {
-
-        const taskForAPI = {
-            'id': task.ID,
-            "title": task.Title,
-            "description": task.Description,
-            "isCompleted": !task.IsCompleted
-        }
-        fetch(`http://127.0.0.1:8000/api/todos/${task.ID}/`, {
+        fetch(`http://127.0.0.1:8000/api/todos/${task.id}/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(taskForAPI),
+            body: JSON.stringify({...task, 'isCompleted': !task.isCompleted}),
         })
             .then((response) => response.json())
             .then((data) => {
-                task.IsCompleted = !task.IsCompleted
+                task.isCompleted = !task.isCompleted
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -119,7 +97,7 @@ class Tasks {
     get titles() {
         let output = []
         for (let i = 0; i < this.tasks.length; i++)
-            output.push(this.tasks[i].Title)
+            output.push(this.tasks[i].title)
         // console.log('Titles', output)
         return output
     }
@@ -127,7 +105,7 @@ class Tasks {
     get ids() {
         let output = []
         for (let i = 0; i < this.tasks.length; i++)
-            output.push(this.tasks[i].ID)
+            output.push(this.tasks[i].id)
         // console.log('IDS', output)
         return output
     }

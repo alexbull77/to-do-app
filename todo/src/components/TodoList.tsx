@@ -43,7 +43,7 @@ const TodoList = observer(() => {
 
             <List>
                 {todo.tasks.map((task) => (
-                    <Card variant="outlined" key={task.ID} sx={{
+                    <Card variant="outlined" key={task.id} sx={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -56,19 +56,19 @@ const TodoList = observer(() => {
                             alignItems: 'center',
                             width: '50%',
                         }}>
-                            <Checkbox {...label} sx={{mr: 1}} checked={task.IsCompleted}
+                            <Checkbox {...label} sx={{mr: 1}} checked={task.ssCompleted}
                                       onChange={() => todo.changeTaskCompletion(task)}/>
                             <Typography
                                 // add a strike style depending on the completed property of the todo item
-                                style={{ textDecoration : task.IsCompleted ? 'line-through' : 'none' }}
-                            >{task.Title}</Typography>
+                                style={{ textDecoration : task.isCompleted ? 'line-through' : 'none' }}
+                            >{task.title}</Typography>
                         </Box>
                         <Box sx={{
                             justifyContent: 'space-around'
                         }}>
                             <EditTaskDialog task={task} />
                             <Fab size="small" color="primary" aria-label="delete"
-                                 onClick={() => todo.removeTask(task.ID)}>
+                                 onClick={() => todo.removeTask(task.id)}>
                                 <DeleteIcon/>
                             </Fab>
                         </Box>

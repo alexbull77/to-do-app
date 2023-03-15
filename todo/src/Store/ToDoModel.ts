@@ -1,6 +1,6 @@
 export default class ToDoModel {
-    ID?: string;
-    Title!: string;
-    Description!: string;
-    IsCompleted!: boolean;
+    id?: string;
+    title!: string;
+    description!: string;
+    isCompleted!: boolean;
 }
