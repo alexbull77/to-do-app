@@ -21,23 +21,33 @@ export default function NewTaskDialog( ) {
 
     const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
-        console.log(title)
+        // console.log(title)
     }
 
     const handleDescriptionChange = (event: React.FormEvent<HTMLInputElement>) => {
         setDescription(event.target.value)
-        console.log(description)
+        // console.log(description)
     }
 
-    const handleSubmit = () => {
-        console.log("Before insert>> ", todo.tasks)
+    const handleSubmit = (event) => {
+        event.preventDefault()
+
+        if (!title || title.length === 0) {
+            console.log('Please enter the title!')
+            return
+        }
+
+        // console.log("Before insert>> ", todo.tasks)
         todo.addTask({
-            ID: Math.random().toString(16).slice(2),
+            // ID: '99',
             Title: title,
             Description: description,
             IsCompleted: false
         })
-        console.log("After insert>> ", todo.tasks)
+
+        // so that we don't have left over values from another task
+        setTitle('')
+        setDescription('')
         handleClose()
     }
 
@@ -91,7 +101,6 @@ export default function NewTaskDialog( ) {
                         Enter a short description
                     </DialogContentText>
                     <TextField
-                        // autoFocus
                         margin="normal"
                         id="name"
                         label="Description"

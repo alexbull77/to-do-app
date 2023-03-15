@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Fab from "@mui/material/Fab";
 import todo from "../Store/ToDoStore"
-import { useState} from "react";
+import {useState} from "react";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function EditTaskDialog({task}) {
@@ -25,18 +25,26 @@ export default function EditTaskDialog({task}) {
 
     const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
-        console.log(title)
+        // console.log(title)
     }
 
     const handleDescriptionChange = (event: React.FormEvent<HTMLInputElement>) => {
         setDescription(event.target.value)
-        console.log(description)
+        // console.log(description)
     }
 
-    const handleSubmit = () => {
-        // console.log("Before insert>> ", todo.tasks)
-        todo.addTask({
-            ID: Math.random().toString(16).slice(2),
+    const handleSubmit = (event) => {
+
+        event.preventDefault()
+        // check if we have changed anything at all
+        if (task.Title === title && task.Description === description) {
+            console.log('Nothing had changed!')
+            handleClose()
+            return
+        }
+
+        todo.updateTask({
+            ID: task.ID,
             Title: title,
             Description: description,
             IsCompleted: task.IsCompleted
@@ -93,7 +101,6 @@ export default function EditTaskDialog({task}) {
                         variant="standard"
                         onChange={handleDescriptionChange}
                     />
-
                 </DialogContent>
 
                 <DialogActions>
