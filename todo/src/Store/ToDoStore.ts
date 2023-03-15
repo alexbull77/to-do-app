@@ -92,12 +92,29 @@ class Tasks {
 
 
     changeTaskCompletion(task: ToDoModel) {
-        task.IsCompleted = !task.IsCompleted
+
+        const taskForAPI = {
+            'id': task.ID,
+            "title": task.Title,
+            "description": task.Description,
+            "isCompleted": !task.IsCompleted
+        }
+        fetch(`http://127.0.0.1:8000/api/todos/${task.ID}/`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(taskForAPI),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                task.IsCompleted = !task.IsCompleted
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }
 
-    // setTasks(new_Tasks: ToDoModel[]) {
-    //     this.tasks = [...this.tasks, ...new_Tasks]
-    // }
 
     get titles() {
         let output = []
