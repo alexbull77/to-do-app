@@ -47,9 +47,7 @@ class Tasks {
         })
     }
 
-    removeTask(id: number | undefined) {
-        // const deletedTask  = this.tasks.find(task => task.ID === id)
-        // remove the given task from the backend
+    removeTask(id: string | undefined) {
         axios.delete(`http://127.0.0.1:8000/api/todos/${id}`)
             .then (res => {
                 console.log(res)

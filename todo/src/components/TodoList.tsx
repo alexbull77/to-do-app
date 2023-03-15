@@ -12,10 +12,11 @@ const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
 const TodoList = observer(() => {
 
-    // useEffect(() => {
-    //     todo.fetchTasks()
-    //     console.log(todo.tasks.title)
-    // }, [])
+    useEffect(() => {
+        todo.fetchTasks()
+        console.log(todo.tasks.titles)
+    }, [])
+
     return (
         <>
             <Box sx={{
@@ -39,9 +40,9 @@ const TodoList = observer(() => {
                             My Todo List
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <FetchButton handleClick={() => todo.fetchTasks()}></FetchButton>
-                    </Grid>
+                    {/*<Grid item xs={6}>*/}
+                    {/*    <FetchButton disabled={true} handleClick={() => todo.fetchTasks()}></FetchButton>*/}
+                    {/*</Grid>*/}
                 </Grid>
 
             </Box>
@@ -57,15 +58,16 @@ const TodoList = observer(() => {
                         margin: 'auto'
                     }}>
                         <Box sx={{display: 'flex', alignItems: 'center', width: '50%'}}>
-                            <Checkbox {...label} sx={{mr: 1}} checked={task.IsCompleted} onChange={() => todo.changeTaskCompletion(task)}/>
+                            <Checkbox {...label} sx={{mr: 1}} checked={task.IsCompleted}
+                                      onChange={() => todo.changeTaskCompletion(task)}/>
                             <Typography>{task.Title}</Typography>
                         </Box>
                         <Fab size="small" color="primary" aria-label="delete" onClick={() => todo.removeTask(task.ID)}>
-                            <DeleteIcon />
+                            <DeleteIcon/>
                         </Fab>
                     </Card>
                 ))}
-                <NewTaskDialog />
+                <NewTaskDialog/>
             </List>
         </>
     );

@@ -32,7 +32,7 @@ export default function NewTaskDialog( ) {
     const handleSubmit = () => {
         console.log("Before insert>> ", todo.tasks)
         todo.addTask({
-            ID: (todo.tasks.at(todo.tasks.length - 1).ID + 1),
+            ID: Math.random().toString(16).slice(2),
             Title: title,
             Description: description,
             IsCompleted: false
@@ -74,14 +74,14 @@ export default function NewTaskDialog( ) {
             {/*<Button variant="outlined" onClick={handleClickOpen}>*/}
             {/*    Open form dialog*/}
             {/*</Button>*/}
-            <Dialog fullWidth={true} open={open} onClose={handleClose}>
+            <Dialog fullWidth={true} open={open} onClose={handleClose} autoFocus={false}>
                 <DialogTitle>New Task Form</DialogTitle>
                 <DialogContent>
                     <DialogContentText color={'primary'}>
                         Please enter a task's title here
                     </DialogContentText>
                     <TextField
-                        autoFocus
+                        autoFocus={true}
                         margin="normal"
                         id="title"
                         label="Title"
@@ -94,7 +94,7 @@ export default function NewTaskDialog( ) {
                         Enter a short description
                     </DialogContentText>
                     <TextField
-                        autoFocus
+                        // autoFocus
                         margin="normal"
                         id="name"
                         label="Description"
