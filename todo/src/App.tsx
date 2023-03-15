@@ -1,7 +1,6 @@
 import React from 'react';
 import TodoList from "./components/TodoList";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import NewTaskDialog from "./components/NewTaskDialog";
 
 const theme = createTheme({
     palette: {

@@ -48,8 +48,17 @@ class Tasks {
     }
 
     removeTask(id: number | undefined) {
-        this.tasks = this.tasks.filter(task => task.ID !== id)
+        // const deletedTask  = this.tasks.find(task => task.ID === id)
+        // remove the given task from the backend
+        axios.delete(`http://127.0.0.1:8000/api/todos/${id}`)
+            .then (res => {
+                console.log(res)
+                console.log(res.data)
+            })
+        this.tasks = this.tasks.filter((task) => task.ID !== id)
     }
+
+
 
     changeTaskCompletion(task: ToDoModel) {
         task.IsCompleted = !task.IsCompleted
