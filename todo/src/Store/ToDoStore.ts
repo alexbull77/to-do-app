@@ -1,5 +1,5 @@
 import ToDoModel from "./ToDoModel";
-import {action, makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 import axios from "axios";
 
 class Tasks {
@@ -67,6 +67,7 @@ class Tasks {
     }
 
     removeTask(id: string | undefined) {
+        // tried axios, but it doesn't really matter in such simple instances
         axios.delete(`http://127.0.0.1:8000/api/todos/${id}`)
             .then(res => {
                 console.log(res)

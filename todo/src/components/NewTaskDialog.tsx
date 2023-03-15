@@ -39,7 +39,7 @@ export default function NewTaskDialog( ) {
 
         // console.log("Before insert>> ", todo.tasks)
         todo.addTask({
-            // ID: '99',
+            // id will be geberated by backend and after successful fetch will be pushed to the task obj
             title: title,
             description: description,
             isCompleted: false
