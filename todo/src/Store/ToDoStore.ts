@@ -3,11 +3,7 @@ import {action, makeAutoObservable} from "mobx";
 import axios from "axios";
 
 class Tasks {
-    tasks: ToDoModel[] = [
-        // {ID: 4, Title: 'First task', Description: 'First Description', IsCompleted: false},
-        // {ID: 2, Title: 'Second task', Description: 'Second Description', IsCompleted: false},
-        // {ID: 3, Title: 'Third task', Description: 'Third Description', IsCompleted: false},
-    ]
+    tasks: ToDoModel[] = []
 
     constructor() {
         makeAutoObservable(this)
@@ -16,12 +12,37 @@ class Tasks {
     addTask(newTask: ToDoModel) {
         this.tasks.push(newTask)
         const taskForAPI = {
+            "id": newTask.ID,
             "title": newTask.Title,
             "description": newTask.Description,
             "isCompleted": newTask.IsCompleted
         }
         fetch("http://127.0.0.1:8000/api/todos/", {
             method: "POST", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(taskForAPI),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    updateTask(updatedTask: ToDoModel) {
+        this.tasks.push(updatedTask)
+        const taskForAPI = {
+            'id': updatedTask.ID,
+            "title": updatedTask.Title,
+            "description": updatedTask.Description,
+            // "isCompleted": updatedTask.IsCompleted
+        }
+        fetch("http://127.0.0.1:8000/api/todos/", {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -62,9 +83,9 @@ class Tasks {
         task.IsCompleted = !task.IsCompleted
     }
 
-    setTasks(new_Tasks: ToDoModel[]) {
-        this.tasks = [...this.tasks, ...new_Tasks]
-    }
+    // setTasks(new_Tasks: ToDoModel[]) {
+    //     this.tasks = [...this.tasks, ...new_Tasks]
+    // }
 
     get titles() {
         let output = []
@@ -75,7 +96,7 @@ class Tasks {
     }
 
     fetchTasks() {
-        console.log('fetch')
+        // console.log('fetch')
         axios.get('http://127.0.0.1:8000/api/todos')
             .then(response => {
                 if (this.tasks.length === 0)

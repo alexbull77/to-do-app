@@ -6,18 +6,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {Box, Card, Typography} from "@mui/material";
 import Fab from "@mui/material/Fab";
 import todo from "../Store/ToDoStore"
-import AddIcon from "@mui/icons-material/Add";
-import {useState} from "react";
+import { useState} from "react";
+import EditIcon from "@mui/icons-material/Edit";
 
-export default function NewTaskDialog( ) {
+export default function EditTaskDialog({task}) {
+
+    if (!task) return null
 
     const [open, setOpen] = useState(false);
 
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
+    const [title, setTitle] = useState(task.Title)
+    const [description, setDescription] = useState(task.Description)
+
+    console.log('Title is ' + title)
+    console.log('Description is ' + description)
 
     const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
@@ -30,14 +34,14 @@ export default function NewTaskDialog( ) {
     }
 
     const handleSubmit = () => {
-        console.log("Before insert>> ", todo.tasks)
+        // console.log("Before insert>> ", todo.tasks)
         todo.addTask({
             ID: Math.random().toString(16).slice(2),
             Title: title,
             Description: description,
-            IsCompleted: false
+            IsCompleted: task.IsCompleted
         })
-        console.log("After insert>> ", todo.tasks)
+        // console.log("After insert>> ", todo.tasks)
         handleClose()
     }
 
@@ -50,51 +54,40 @@ export default function NewTaskDialog( ) {
     };
 
     return (
-        <div>
-            <Card variant="outlined" sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                maxWidth: '600px',
-                margin: 'auto'
-            }}>
-                <Box sx={{display: 'flex', alignItems: 'center', width: '50%'}}>
-                    <Fab size="small" color="primary" aria-label="add-task" sx={{
-                        display: 'flex',
-                        marginRight: '20px'
-                    }}
-                         onClick={handleClickOpen}
-                    >
-                        <AddIcon />
-                    </Fab>
-                    <Typography>Add Task</Typography>
-                </Box>
-            </Card>
+        <>
+            <Fab size="small"
+                 color="secondary"
+                 aria-label="edit"
+                 onClick={handleClickOpen}
+            >
+                <EditIcon/>
+            </Fab>
             <Dialog fullWidth={true} open={open} onClose={handleClose} autoFocus={false}>
-                <DialogTitle>New Task Form</DialogTitle>
+                <DialogTitle>Edit Task Form</DialogTitle>
                 <DialogContent>
                     <DialogContentText color={'primary'}>
-                        Please enter a task's title here
+                        Please rename your task
                     </DialogContentText>
                     <TextField
                         autoFocus={true}
+                        value={title}
                         margin="normal"
                         id="title"
-                        label="Title"
+                        // label="Title"
                         type="text"
                         fullWidth
                         variant="standard"
                         onChange={handleTitleChange}
                     />
                     <DialogContentText color={'primary'}>
-                        Enter a short description
+                        Refactor the existing description
                     </DialogContentText>
                     <TextField
                         // autoFocus
                         margin="normal"
                         id="name"
-                        label="Description"
+                        // label="Description"
+                        value={description}
                         type="text"
                         fullWidth
                         variant="standard"
@@ -105,9 +98,9 @@ export default function NewTaskDialog( ) {
 
                 <DialogActions>
                     <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-                    <Button variant="outlined" onClick={handleSubmit}>Add</Button>
+                    <Button variant="outlined" onClick={handleSubmit}>Save Changes</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </>
     );
 }
