@@ -1,22 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {observer} from "mobx-react-lite";
 import todo from "../Store/ToDoStore"
-import ToDoModel from "../Store/ToDoModel";
-import {Box, Button, Card, Checkbox, Grid, List, Typography} from "@mui/material";
+import {Box, Card, Checkbox, Grid, List, Typography} from "@mui/material";
 import Fab from "@mui/material/Fab";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FetchButton from "./FetchButton";
-import NewTaskDialog from "./NewTaskDialog";
-import EditIcon from '@mui/icons-material/Edit';
-import EditTaskDialog from "./EditTaskDialog";
+import {NewTaskDialog} from "./NewTaskDialog";
+import {EditTaskDialog} from "./EditTaskDialog";
 
 const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
-const TodoList = observer(() => {
+export const TodoList: React.FC = observer(() => {
 
     useEffect(() => {
         todo.fetchTasks()
-        // console.log(todo.titles)
     }, [])
 
     return (
@@ -80,5 +76,3 @@ const TodoList = observer(() => {
         </>
     );
 });
-
-export default TodoList;

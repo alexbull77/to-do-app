@@ -1,5 +1,5 @@
 import React from 'react';
-import TodoList from "./components/TodoList";
+import {TodoList} from "./components/TodoList";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
 
@@ -28,7 +28,7 @@ const theme = createTheme({
     },
 });
 
-const App = () => {
+const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />

@@ -12,7 +12,7 @@ import todo from "../Store/ToDoStore"
 import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
 
-export default function NewTaskDialog( ) {
+export const NewTaskDialog: React.FC = () => {
 
     const [open, setOpen] = useState(false);
 

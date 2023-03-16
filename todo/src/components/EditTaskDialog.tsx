@@ -11,7 +11,7 @@ import todo from "../Store/ToDoStore"
 import {useState} from "react";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function EditTaskDialog({task}) {
+export const EditTaskDialog: React.FC = ({task}) => {
 
     if (!task) return null
 
