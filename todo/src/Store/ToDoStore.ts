@@ -1,6 +1,13 @@
 import ToDoModel from "./ToDoModel";
-import { makeAutoObservable } from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 import axios from "axios";
+
+interface ApiObject {
+    id: number
+    description: string
+    title: string
+    isCompleted: boolean
+}
 
 class Tasks {
     tasks: ToDoModel[] = []
@@ -19,10 +26,12 @@ class Tasks {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("Success:", data);
-                newTask.id = data.id
-                console.log(newTask)
-                this.tasks.push(newTask)
+                runInAction(() => {
+                    console.log("Success:", data);
+                    newTask.id = data.id
+                    console.log(newTask)
+                    this.tasks.push(newTask)
+                })
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -41,21 +50,25 @@ class Tasks {
         })
             .then((response) => response.json())
             .then((data) => {
-                // console.log("Success:", data);
-                // get the old task to change the values without fetching data from backend
-                // although it might not be optimal
-                // who knows))
-                const oldTask = this.tasks.find(task => task.id === updatedTask.id)
-                // 2 possibly changed fields
-                oldTask.title = updatedTask.title
-                oldTask.description = updatedTask.description
+
+                // to fix the error of mobx about editing an attribute without an action
+                runInAction(() => {
+                    // console.log("Success:", data);
+                    // get the old task to change the values without fetching data from backend
+                    // although it might not be optimal
+                    // who knows))
+                    const oldTask = this.tasks.find(task => task.id === updatedTask.id)
+                    // 2 possibly changed fields
+                    oldTask.title = updatedTask.title
+                    oldTask.description = updatedTask.description
+                })
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     }
 
-    addTasks(tasks) {
+    addTasks(tasks: ToDoModel[]) {
         tasks.map(({id, title, description, isCompleted}) => {
             this.tasks.push({
                 id: id,
@@ -73,7 +86,10 @@ class Tasks {
                 console.log(res)
                 console.log(res.data)
             })
-        this.tasks = this.tasks.filter((task) => task.id !== id)
+        runInAction(() => {
+            this.tasks = this.tasks.filter((task) => task.id !== id)
+
+        })
     }
 
 
@@ -87,7 +103,9 @@ class Tasks {
         })
             .then((response) => response.json())
             .then((data) => {
-                task.isCompleted = !task.isCompleted
+                runInAction(() => {
+                    task.isCompleted = !task.isCompleted
+                })
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -103,6 +121,7 @@ class Tasks {
         return output
     }
 
+    // not using it but might in the future
     get ids() {
         let output = []
         for (let i = 0; i < this.tasks.length; i++)
@@ -119,7 +138,7 @@ class Tasks {
                     this.addTasks(response.data)
                 else {
                     // we check if data was fetched before so there is no need to fetch again
-                    const newTasks = response.data.filter((obj) => !this.titles.includes(obj.title))
+                    const newTasks = response.data.filter((obj: ApiObject) => !this.titles.includes(obj.title))
                     // console.log('New Tasks', newTasks)
                     if (newTasks.length !== 0)
                         this.addTask(newTasks)

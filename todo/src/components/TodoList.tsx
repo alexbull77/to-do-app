@@ -9,6 +9,7 @@ import {EditTaskDialog} from "./EditTaskDialog";
 
 const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
+
 export const TodoList: React.FC = observer(() => {
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export const TodoList: React.FC = observer(() => {
                             alignItems: 'center',
                             width: '50%',
                         }}>
-                            <Checkbox {...label} sx={{mr: 1}} checked={task.ssCompleted}
+                            <Checkbox {...label} sx={{mr: 1}} checked={task.isCompleted}
                                       onChange={() => todo.changeTaskCompletion(task)}/>
                             <Typography
                                 // add a strike style depending on the completed property of the todo item

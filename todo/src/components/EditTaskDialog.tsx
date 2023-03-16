@@ -10,8 +10,13 @@ import Fab from "@mui/material/Fab";
 import todo from "../Store/ToDoStore"
 import {useState} from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import ToDoModel from "../Store/ToDoModel";
 
-export const EditTaskDialog: React.FC = ({task}) => {
+interface Props {
+    task: ToDoModel
+}
+
+export const EditTaskDialog: React.FC<Props> = ({ task }) => {
 
     if (!task) return null
 
@@ -24,16 +29,16 @@ export const EditTaskDialog: React.FC = ({task}) => {
     // console.log('Description is ' + description)
 
     const handleTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        setTitle(event.target.value)
-        // console.log(title)
+        const target = event.target as HTMLTextAreaElement;
+        setTitle(target.value)
     }
 
     const handleDescriptionChange = (event: React.FormEvent<HTMLInputElement>) => {
-        setDescription(event.target.value)
-        // console.log(description)
+        const target = event.target as HTMLTextAreaElement;
+        setDescription(target.value)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         event.preventDefault()
         // check if we have changed anything at all
@@ -49,7 +54,6 @@ export const EditTaskDialog: React.FC = ({task}) => {
             description: description,
             isCompleted: task.isCompleted
         })
-        // console.log("After insert>> ", todo.tasks)
         handleClose()
     }
 
@@ -70,7 +74,9 @@ export const EditTaskDialog: React.FC = ({task}) => {
             >
                 <EditIcon/>
             </Fab>
-            <Dialog fullWidth={true} open={open} onClose={handleClose} autoFocus={false}>
+            <Dialog fullWidth={true}
+                    open={open}
+                    onClose={handleClose}>
                 <DialogTitle>Edit Task Form</DialogTitle>
                 <DialogContent>
                     <DialogContentText color={'primary'}>
