@@ -1,19 +1,25 @@
-import { types } from "mobx-state-tree";
-
-const Todo = types.model({
-    id: 0,
-    title: "",
-    description: "",
-    isCompleted: false,
-});
+import { TypeOfValue, types } from "mobx-state-tree";
+import { Todo } from "./Todo";
 
 const TaskStore = types
     .model("Todo", {
-        Todo: types.array(Todo),
+        Todos: types.array(Todo),
     })
     .actions((self) => ({
         add(task) {
-            self.Todo.push(task);
+            self.Todos.push(task);
+        },
+
+        remove(id: number) {
+            self.Todos = self.Todos.filter((todo) => todo.id !== id);
+        },
+    }))
+    .views((self) => ({
+        getById(id: number) {
+            return self.Todos.find((todo) => todo.id === id);
         },
     }));
-export default TaskStore;
+
+export const store = TaskStore.create({
+    Todos: [],
+});
